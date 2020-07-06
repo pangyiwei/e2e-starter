@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.example.app.util.AppUrlBuilder;
-import com.example.app.util.ChromeWebDriverHelper;
 import com.example.app.util.WebDriverHelper;
+import com.example.app.util.WebDriverHelperFactory;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,7 +24,7 @@ public class PageCommonTest {
     @BeforeAll
     public void setUp() throws FileNotFoundException, IOException {
         String baseUrl = new AppUrlBuilder().build();
-        helper = new ChromeWebDriverHelper();
+        helper = WebDriverHelperFactory.getWebDriverHelper();
         helper.setUp();
         helper.setWebDriverWait(5);
         pageCommon = new PageCommon(helper);
