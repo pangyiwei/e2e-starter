@@ -1,0 +1,29 @@
+package com.example.app.util;
+
+import java.util.HashMap;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+public class ChromeWebDriverHelper extends WebDriverHelper {
+	@Override
+	public void setUp() {
+		try {
+			HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+			chromePrefs.put("profile.default_content_settings.popups", 0);
+			chromePrefs.put("download.default_directory",
+					PropertiesReader.getProperty("download.directory", "src/main/resources/downloads"));
+
+			ChromeOptions options = new ChromeOptions();
+			options.setExperimentalOption("prefs", chromePrefs);
+			options.addArguments("start-maximized");
+			if (PropertiesReader.getProperty("browser.headless", false))
+				options.addArguments("headless");
+			System.setProperty("webdriver.chrome.driver",
+					PropertiesReader.getProperty("web.driver.path", "src/main/resources/drivers/chromedriver.exe"));
+			this.webDriver = new ChromeDriver(options);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
