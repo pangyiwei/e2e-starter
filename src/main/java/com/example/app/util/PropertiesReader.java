@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PropertiesReader {
 
@@ -17,11 +19,11 @@ public class PropertiesReader {
 	public static String getProperty(String property, String fallbackValue) throws FileNotFoundException, IOException {
 		String value = getPropertyFromJVMArgs(property);
 		if (value != null) {
-			return value;
+			return resolveEnvVars(value);
 		}
 		value = getPropertyFromFile(property);
 		if (value != null) {
-			return value;
+			return resolveEnvVars(value);
 		}
 		return fallbackValue;
 	}
@@ -73,6 +75,22 @@ public class PropertiesReader {
 	
 	static String getPropertyFromJVMArgs(String property) {
 		return System.getProperty(property);
+	}
+
+	static String resolveEnvVars(String value) {
+		if (null == value) {
+			return null;
+		}
+		Pattern p = Pattern.compile("\\$\\{(\\w+)\\}|\\$(\\w+)");
+		Matcher m = p.matcher(value);
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			String envVarName = null == m.group(1) ? m.group(2) : m.group(1);
+			String envVarValue = System.getenv(envVarName);
+			m.appendReplacement(sb, null == envVarValue ? "" : Matcher.quoteReplacement(envVarValue));
+		}
+		m.appendTail(sb);
+		return sb.toString();
 	}
 
 }
