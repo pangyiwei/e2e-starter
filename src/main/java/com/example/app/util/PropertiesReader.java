@@ -39,15 +39,19 @@ public class PropertiesReader {
 	static List<String> getActivePropertyFilenames() throws FileNotFoundException, IOException {
 		List<String> filenames = new ArrayList<String>();
 		filenames.add(FILE_PREFIX + FILE_SUFFIX);
-		String mainPropertyFilename = PropertiesReader.class.getClassLoader().getResource(filenames.get(0)).getFile();
-		
-		Properties appProps = new Properties();
-		appProps.load(new FileInputStream(mainPropertyFilename));
-		String activeProfiles = appProps.getProperty(ACTIVE_PROFILES_KEY);
-		List<String> preprocessed = Arrays.asList(activeProfiles.split(","));
-		
-		for (String profileKey : preprocessed) {
-			filenames.add(FILE_PREFIX + "-" + profileKey.trim().toLowerCase() + FILE_SUFFIX);
+
+		String activeProfiles = getPropertyFromJVMArgs(ACTIVE_PROFILES_KEY);
+		if (activeProfiles == null) {
+			String mainPropertyFilename = PropertiesReader.class.getClassLoader().getResource(filenames.get(0)).getFile();
+			Properties appProps = new Properties();
+			appProps.load(new FileInputStream(mainPropertyFilename));
+			activeProfiles = appProps.getProperty(ACTIVE_PROFILES_KEY);
+		}
+		if (activeProfiles != null) {
+			List<String> preprocessed = Arrays.asList(activeProfiles.split(","));
+			for (String profileKey : preprocessed) {
+				filenames.add(FILE_PREFIX + "-" + profileKey.trim().toLowerCase() + FILE_SUFFIX);
+			}
 		}
 		return filenames;
 	}
