@@ -40,7 +40,7 @@ public class SearchPageTest {
     @Test
     public void canPerformSearch() {
         searchPage.getSearchInput().sendKeys("Test");
-        searchPage.getSearchButton().click();
+        searchPage.getSearchForm().submit();
         String resultStatText = searchPage.getResultStatsText().getText();
         assertTrue(resultStatText.contains("results"));
         System.out.println("canPerformSearch() Completed");

@@ -18,8 +18,8 @@ public class SearchPage extends PageCommon {
         return getWebElement(locator);
     }
 
-    public WebElement getSearchButton() {
-        final By locator = By.name("btnK");
+    public WebElement getSearchForm() {
+        final By locator = By.name("f");
         visibilityOfElementLocated(locator);
         return getWebElement(locator);
     }

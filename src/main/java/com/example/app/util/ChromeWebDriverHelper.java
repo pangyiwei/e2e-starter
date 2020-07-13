@@ -32,12 +32,11 @@ public class ChromeWebDriverHelper extends WebDriverHelper {
 				proxy.setSslProxy(proxyUrl);
 				proxy.setHttpProxy(proxyUrl);
 				DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-				capabilities.setCapability("proxy", proxy);
+				capabilities.setCapability(CapabilityType.PROXY, proxy);
 				capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 				options.addArguments("--proxy-bypass-list=<-loopback>");
 				options.merge(capabilities);
 			}
-
 			this.webDriver = new ChromeDriver(options);
 		} catch (Exception e) {
 			e.printStackTrace();
