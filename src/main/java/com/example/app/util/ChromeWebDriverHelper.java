@@ -1,12 +1,12 @@
 package com.example.app.util;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class ChromeWebDriverHelper extends WebDriverHelper {
 	@Override
@@ -14,16 +14,21 @@ public class ChromeWebDriverHelper extends WebDriverHelper {
 		try {
 			HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
 			chromePrefs.put("profile.default_content_settings.popups", 0);
-			chromePrefs.put("download.default_directory",
-					PropertiesReader.getProperty("download.directory", "src/main/resources/downloads"));
+
+			Path downloadFilePath = Paths.get(System.getProperty("user.dir") + "/"
+					+ PropertiesReader.getProperty("download.directory", "src/main/resources/downloads"));
+			chromePrefs.put("download.default_directory", downloadFilePath.toString());
 
 			ChromeOptions options = new ChromeOptions();
 			options.setExperimentalOption("prefs", chromePrefs);
 			options.addArguments("start-maximized");
-			if (PropertiesReader.getProperty("browser.headless", false))
-				options.addArguments("headless");
-			System.setProperty("webdriver.chrome.driver",
-					PropertiesReader.getProperty("web.driver.path", "src/main/resources/drivers/chromedriver.exe"));
+
+			Boolean headless = PropertiesReader.getProperty("browser.headless", false);
+			options.setHeadless(headless);
+
+			Path webDriverPath = Paths.get(System.getProperty("user.dir") + "/"
+                    + PropertiesReader.getProperty("web.driver.path", "src/main/resources/drivers/chromedriver.exe"));
+            System.setProperty("webdriver.chrome.driver", webDriverPath.toString());
 
 			if (PropertiesReader.getProperty("proxy.enabled", false)) {
 				Proxy proxy = new Proxy();
@@ -31,11 +36,9 @@ public class ChromeWebDriverHelper extends WebDriverHelper {
 				System.out.println("Proxy through " + proxyUrl);
 				proxy.setSslProxy(proxyUrl);
 				proxy.setHttpProxy(proxyUrl);
-				DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-				capabilities.setCapability(CapabilityType.PROXY, proxy);
-				capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+				options.setProxy(proxy);
+				options.setAcceptInsecureCerts(true);
 				options.addArguments("--proxy-bypass-list=<-loopback>");
-				options.merge(capabilities);
 			}
 			this.webDriver = new ChromeDriver(options);
 		} catch (Exception e) {
