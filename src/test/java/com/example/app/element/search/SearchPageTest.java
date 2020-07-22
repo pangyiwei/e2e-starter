@@ -2,10 +2,7 @@ package com.example.app.element.search;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import com.example.app.util.AppUrlBuilder;
+import com.example.app.util.Properties;
 import com.example.app.util.WebDriverHelper;
 import com.example.app.util.WebDriverHelperFactory;
 
@@ -22,13 +19,11 @@ public class SearchPageTest {
     private SearchPage searchPage;
 
     @BeforeAll
-    public void setUp() throws FileNotFoundException, IOException {
-        String baseUrl = new AppUrlBuilder().build();
+    public void setUp() {
         helper = WebDriverHelperFactory.getWebDriverHelper();
-        helper.setUp();
         helper.setWebDriverWait(5);
         searchPage = new SearchPage(helper);
-        helper.navigateTo(baseUrl);
+        helper.navigateTo(Properties.APP_BASE_URL);
     }
 
     @AfterAll

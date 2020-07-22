@@ -16,23 +16,23 @@ public class ChromeWebDriverHelper extends WebDriverHelper {
 			chromePrefs.put("profile.default_content_settings.popups", 0);
 
 			Path downloadFilePath = Paths.get(System.getProperty("user.dir") + "/"
-					+ PropertiesReader.getProperty("download.directory", "src/main/resources/downloads"));
+					+ Properties.DOWNLOAD_DIRECTORY);
 			chromePrefs.put("download.default_directory", downloadFilePath.toString());
 
 			ChromeOptions options = new ChromeOptions();
 			options.setExperimentalOption("prefs", chromePrefs);
 			options.addArguments("start-maximized");
 
-			Boolean headless = PropertiesReader.getProperty("browser.headless", false);
+			Boolean headless = Properties.BROWSER_HEADLESS;
 			options.setHeadless(headless);
 
 			Path webDriverPath = Paths.get(System.getProperty("user.dir") + "/"
-                    + PropertiesReader.getProperty("web.driver.path", "src/main/resources/drivers/chromedriver.exe"));
+                    + Properties.WEB_DRIVER_PATH);
             System.setProperty("webdriver.chrome.driver", webDriverPath.toString());
 
-			if (PropertiesReader.getProperty("proxy.enabled", false)) {
+			if (Properties.PROXY_ENABLED) {
 				Proxy proxy = new Proxy();
-				String proxyUrl = PropertiesReader.getProperty("proxy.url", "http://localhost:8081");
+				String proxyUrl = Properties.PROXY_URL;
 				System.out.println("Proxy through " + proxyUrl);
 				proxy.setSslProxy(proxyUrl);
 				proxy.setHttpProxy(proxyUrl);

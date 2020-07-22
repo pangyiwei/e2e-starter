@@ -7,9 +7,8 @@ public class AppUrlBuilder {
     private String url;
 	
 	public AppUrlBuilder() throws FileNotFoundException, IOException {
-		this.url = PropertiesReader.getProperty("app.base.url", "http://localhost:8080");
+		this.url = Properties.APP_BASE_URL;
 	}
-	
 	public AppUrlBuilder addPath(String path) {
 		url = url + "/" + path;
 		return this;

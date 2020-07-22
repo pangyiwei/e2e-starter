@@ -10,8 +10,8 @@ public class HtmlUnitWebDriverHelper extends WebDriverHelper {
     public void setUp() {
         try {
             HtmlUnitDriver webDriver = new HtmlUnitDriver(true);
-			if (PropertiesReader.getProperty("proxy.enabled", false)) {
-			    String proxyUrl = PropertiesReader.getProperty("proxy.url", "http://localhost:8081");
+			if (Properties.PROXY_ENABLED) {
+			    String proxyUrl = Properties.PROXY_URL;
 			    URI uri = new URI(proxyUrl);
                 webDriver.setAcceptSslCertificates(true);
                 webDriver.setProxy(uri.getHost(), uri.getPort());
