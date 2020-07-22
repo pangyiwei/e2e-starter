@@ -27,8 +27,7 @@ public class PageCommonTest {
     }
 
     @AfterAll
-    public void tearDown() {
-        helper.tearDown();
+    public void complete() {
         System.out.println("All PageCommonTests Completed");
     }
 

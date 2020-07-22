@@ -27,8 +27,7 @@ public class SearchPageTest {
     }
 
     @AfterAll
-    public void tearDown() {
-        helper.tearDown();
+    public void complete() {
         System.out.println("All SearchPageTests Completed");
     }
 

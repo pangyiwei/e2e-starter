@@ -1,16 +1,21 @@
 package com.example.app.util;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 public class WebDriverHelperFactory {
-    public static WebDriverHelper getWebDriverHelper() throws FileNotFoundException, IOException {
-        String webDriverType = PropertiesReader.getProperty("web.driver.type", "chromedriver");
-        if (webDriverType.equalsIgnoreCase(WebDriverTypes.CHROME_DRIVER)) {
-            return new ChromeWebDriverHelper();
-        } else if (webDriverType.equalsIgnoreCase(WebDriverTypes.HTML_UNIT)) {
-            return new HtmlUnitWebDriverHelper();
+    private WebDriverHelperFactory() {}
+
+    private static class WebDriverHelperFactoryHolder {
+        private static WebDriverHelper webDriverHelper;
+        static {
+            if (Properties.WEB_DRIVER_TYPE.equalsIgnoreCase(WebDriverTypes.CHROME_DRIVER)) {
+                webDriverHelper = new ChromeWebDriverHelper();
+            } else if (Properties.WEB_DRIVER_TYPE.equalsIgnoreCase(WebDriverTypes.HTML_UNIT)) {
+                webDriverHelper =  new HtmlUnitWebDriverHelper();
+            }
+            webDriverHelper.setUp();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> webDriverHelper.tearDown()));
         }
-        return null;
+    }
+    public static WebDriverHelper getWebDriverHelper() {
+        return WebDriverHelperFactoryHolder.webDriverHelper;
     }
 }
