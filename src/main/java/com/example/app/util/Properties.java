@@ -19,7 +19,8 @@ public class Properties {
             DOWNLOAD_DIRECTORY = PropertiesReader.getProperty("download.directory", "src/main/resources/downloads");
             BROWSER_HEADLESS = PropertiesReader.getProperty("browser.headless", false);
 		} catch (Exception e) {
-			e.printStackTrace();
+            e.printStackTrace();
+            System.exit(0);
 		}
     }
 }
