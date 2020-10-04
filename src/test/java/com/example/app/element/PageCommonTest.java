@@ -2,28 +2,27 @@ package com.example.app.element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.example.app.util.Properties;
-import com.example.app.util.WebDriverHelper;
-import com.example.app.util.WebDriverHelperFactory;
+import com.example.app.util.GlobalProperties;
+import com.example.app.util.webdriver.WebDriverFactory;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.openqa.selenium.WebDriver;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class PageCommonTest {
     
-    private WebDriverHelper helper;
+    private WebDriver driver;
     private PageCommon pageCommon;
 
     @BeforeAll
     public void setUp() {
-        helper = WebDriverHelperFactory.getWebDriverHelper();
-        helper.setWebDriverWait(5);
-        pageCommon = new PageCommon(helper);
-        helper.navigateTo(Properties.APP_BASE_URL);
+        this.driver = WebDriverFactory.getWebDriver();
+        pageCommon = new PageCommon(driver, GlobalProperties.appBaseUrl);
+        pageCommon.navigateTo();
     }
 
     @AfterAll
@@ -33,7 +32,7 @@ public class PageCommonTest {
 
     @Test
     public void canNavigateToImagesPage() {
-        pageCommon.getImagesLink().click();
+        pageCommon.clickImagesLink();;
         String imageText = pageCommon.getBelowLogoImagesText().getText();
         assertEquals("images", imageText);
         System.out.println("canNavigateToImagesPage() Completed");
