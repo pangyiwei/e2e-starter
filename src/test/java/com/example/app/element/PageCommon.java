@@ -1,6 +1,7 @@
 package com.example.app.element;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -24,7 +25,12 @@ public class PageCommon extends Page{
 
     // Should not be here. Only here for illustration. Should have a image search page.
     public WebElement getBelowLogoImagesText() {
-        final By locator = By.cssSelector(".logo-subtext > span");
-        return new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
+        try {
+            final By locator = By.cssSelector(".logo-subtext > span");
+            return new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
+        } catch (TimeoutException e) {
+            final By locator = By.cssSelector(".a9nkvf > span");
+            return new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
+        }
     }
 }
