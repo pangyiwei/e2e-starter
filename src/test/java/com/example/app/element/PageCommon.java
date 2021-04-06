@@ -25,6 +25,6 @@ public class PageCommon extends Page{
     // Should not be here. Only here for illustration. Should have a image search page.
     public WebElement getBelowLogoImagesText() {
         final By locator = By.cssSelector(".logo-subtext > span");
-        return new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(locator));
+        return new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 }

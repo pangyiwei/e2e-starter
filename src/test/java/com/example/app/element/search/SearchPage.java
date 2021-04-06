@@ -21,9 +21,9 @@ public class SearchPage extends PageCommon {
     }
 
     public void submitSearchForm() {
-        final By locator = By.name("f");
-        WebElement form =  new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
-        form.submit();
+        final By locator = By.name("btnK");
+        WebElement btn =  new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
+        btn.submit();
     }
 
     public String getResultStatsText() {
